@@ -27,7 +27,7 @@ public class Army extends DataObject {
 	}
 
 	public static String getArmyIdKeyString(Long userRaceId) {
-		return generatorIdKey(Entity.USERRACE, Entity.ARMY.name(), String.valueOf(userRaceId));
+		return generatorIdKey(Entity.PLAYER, Entity.ARMY.name(), String.valueOf(userRaceId));
 	}
 
 	public Long getArmyExpId() {

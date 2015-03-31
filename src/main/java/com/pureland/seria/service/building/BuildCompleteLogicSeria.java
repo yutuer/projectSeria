@@ -16,12 +16,12 @@ import com.pureland.common.util.SpringContextUtil;
 import com.pureland.core.init.EntityModelHelper;
 import com.pureland.core.service.UserExtService;
 import com.pureland.core.service.impl.UserExtServiceImpl;
-import com.pureland.seria.db.dao.BuildingSeriaDAO;
+import com.pureland.seria.db.dao.BuildingDao;
 import com.pureland.seria.db.seriaData.building.Building;
 import com.pureland.seria.module.BuildingModule;
 
 public abstract class BuildCompleteLogicSeria {
-	private BuildingSeriaDAO buildingSeriaDAO = (BuildingSeriaDAO) SpringContextUtil.getBean(BuildingSeriaDAO.class.getSimpleName());
+	private BuildingDao buildingSeriaDAO = (BuildingDao) SpringContextUtil.getBean(BuildingDao.class.getSimpleName());
 	protected UserRaceCommonService userRaceCommonService = (UserRaceCommonService) SpringContextUtil.getBean(UserRaceCommonServiceImpl.class.getSimpleName());
 	protected UserExtService userExtService = (UserExtService) SpringContextUtil.getBean(UserExtServiceImpl.class.getSimpleName());
 	protected BuildingCommonService buildingCommonService = (BuildingCommonService) SpringContextUtil.getBean(BuildingCommonServiceImpl.class.getSimpleName());

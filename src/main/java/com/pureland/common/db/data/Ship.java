@@ -55,7 +55,7 @@ public class Ship extends DataObject {
 	}
 
 	public static String generatorUserRaceShipSidKey(Long userRaceId) {
-		return StringUtils.join(new String[] { Entity.USERRACE.name(), Entity.SEPARATOR, String.valueOf(userRaceId), Entity.SEPARATOR,
+		return StringUtils.join(new String[] { Entity.PLAYER.name(), Entity.SEPARATOR, String.valueOf(userRaceId), Entity.SEPARATOR,
 				Ship.Field.IncrSid.name() });
 	}
 
@@ -132,7 +132,7 @@ public class Ship extends DataObject {
 	}
 
 	public static String generatorShipSetKey(Long userRaceId) {
-		return StringUtils.join(new String[] { Entity.USERRACE.name(), Entity.SEPARATOR, String.valueOf(userRaceId), Entity.SEPARATOR,
+		return StringUtils.join(new String[] { Entity.PLAYER.name(), Entity.SEPARATOR, String.valueOf(userRaceId), Entity.SEPARATOR,
 				UserRace.Field.SHIPS.name() });
 	}
 

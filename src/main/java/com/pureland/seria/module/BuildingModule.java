@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.pureland.common.enums.Entity;
 import com.pureland.seria.db.seriaData.building.Building;
 
 public class BuildingModule extends AbstractModule {
@@ -44,4 +45,7 @@ public class BuildingModule extends AbstractModule {
 		return buildingMaps.containsKey(buildingId);
 	}
 
+	public static String getKeyString(Long playerId) {
+		return Entity.PLAYER.name() + Entity.SEPARATOR + playerId + Entity.SEPARATOR + ModuleEnum.Building.name();
+	}
 }

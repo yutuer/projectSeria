@@ -46,12 +46,12 @@ import com.pureland.core.service.impl.ArmyServiceImpl;
 import com.pureland.core.service.impl.BuildingServiceImpl.BuildingRuler;
 import com.pureland.core.service.impl.BuildingServiceImpl.UpgradeBuildingRuler;
 import com.pureland.core.service.impl.SkillServiceImpl;
-import com.pureland.seria.db.dao.BuildingSeriaDAO;
+import com.pureland.seria.db.dao.BuildingDao;
 import com.pureland.seria.module.BuildingModule;
 
 public class BuildingSeriaServiceImpl implements BuildingService {
 
-	private BuildingSeriaDAO buildingSeriaDAO = (BuildingSeriaDAO) SpringContextUtil.getBean(BuildingSeriaDAO.class.getSimpleName());
+	private BuildingDao buildingSeriaDAO = (BuildingDao) SpringContextUtil.getBean(BuildingDao.class.getSimpleName());
 	private UserRaceDAO userRaceDAO = (UserRaceDAO) SpringContextUtil.getBean(UserRaceDAO.class.getSimpleName());
 	private UserRaceCommonService userRaceCommonService = (UserRaceCommonService) SpringContextUtil.getBean(UserRaceCommonServiceImpl.class.getSimpleName());
 	private Map<String, BuildCompleteLogic> buildCompleteLogicMap;

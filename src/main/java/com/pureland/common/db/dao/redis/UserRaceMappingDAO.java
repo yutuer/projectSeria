@@ -13,10 +13,10 @@ import com.pureland.common.enums.Entity;
 public class UserRaceMappingDAO extends RedisDAO {
 
 	public void addSetCollection(Long userId, String value) throws DBException {
-		super.addSetCollection(Entity.USERRACEMAPPING, String.valueOf(userId), value);
+		super.addSetCollection(Entity.PLAYERMAPPING, String.valueOf(userId), value);
 	}
 	
 	public Set<String> getSetCollection(Long userId) throws DBException {
-		return super.getSetCollection(Entity.USERRACEMAPPING, String.valueOf(userId));
+		return super.getSetCollection(Entity.PLAYERMAPPING, String.valueOf(userId));
 	}
 }

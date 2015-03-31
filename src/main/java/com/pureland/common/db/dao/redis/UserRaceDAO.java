@@ -39,7 +39,7 @@ public class UserRaceDAO extends RedisDAO {
 		Long upgradeSkillCompleteTime = userRace.getUpgradeSkillCompleteTime();
 
 		try {
-			id = RString.generator(Entity.USERRACE.getName());
+			id = RString.generator(Entity.PLAYER.getName());
 			String keyUserId = UserRace.generatorFieldKey(id, Entity.UserRace.USERID.getName());
 			String keyRaceId = UserRace.generatorFieldKey(id, Entity.UserRace.RACEID.getName());
 			String keyNickName = UserRace.generatorFieldKey(id, Entity.UserRace.NICKNAME.getName());
@@ -173,7 +173,7 @@ public class UserRaceDAO extends RedisDAO {
 	}
 
 	public void addListCollection(String value) throws DBException {
-		super.addListCollection(Entity.USERRACE, value);
+		super.addListCollection(Entity.PLAYER, value);
 	}
 
 	public Set<String> getAllOfflineUserRaceIds() throws DBException {

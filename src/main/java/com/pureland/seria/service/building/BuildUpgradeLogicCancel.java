@@ -11,13 +11,13 @@ import com.pureland.common.service.impl.UserRaceCommonServiceImpl;
 import com.pureland.common.service.impl.WorkerQueueCommonServiceImpl;
 import com.pureland.common.util.SpringContextUtil;
 import com.pureland.core.init.EntityModelHelper;
-import com.pureland.seria.db.dao.BuildingSeriaDAO;
+import com.pureland.seria.db.dao.BuildingDao;
 import com.pureland.seria.db.seriaData.building.Building;
 
 public class BuildUpgradeLogicCancel extends BuildUpgradeLogicSeria {
 	private UserRaceCommonService userRaceCommonService = (UserRaceCommonService) SpringContextUtil.getBean(UserRaceCommonServiceImpl.class.getSimpleName());
 	private WorkerQueueCommonService queueService = (WorkerQueueCommonService) SpringContextUtil.getBean(WorkerQueueCommonServiceImpl.class.getSimpleName());
-	private BuildingSeriaDAO buildingSeriaDAO = (BuildingSeriaDAO) SpringContextUtil.getBean(BuildingSeriaDAO.class.getSimpleName());
+	private BuildingDao buildingSeriaDAO = (BuildingDao) SpringContextUtil.getBean(BuildingDao.class.getSimpleName());
 
 	@Override
 	protected void upgradeBuilding0(BuildingUpgradeBean buildingUpgradeBean, Building building) throws CoreException {

@@ -22,7 +22,4 @@ public abstract class AbstractModule implements IModule {
 		return playerId;
 	}
 
-	public static String getKeyString(Long playerId) {
-		return Entity.USERRACE.name() + Entity.SEPARATOR + playerId + Entity.SEPARATOR + Entity.MODULE.name();
-	}
 }

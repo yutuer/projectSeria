@@ -1,6 +1,5 @@
 package com.pureland.common.db.dao.redis;
 
-import com.pureland.common.error.CoreException;
 import org.apache.commons.lang3.StringUtils;
 
 import com.pureland.common.component.cache.api.RString;

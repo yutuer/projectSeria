@@ -1,6 +1,5 @@
 package com.pureland.common.service;
 
-import com.pureland.common.db.data.Machine;
 import com.pureland.common.error.CoreException;
 
 /**

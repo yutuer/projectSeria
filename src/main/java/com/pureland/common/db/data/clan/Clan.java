@@ -78,7 +78,7 @@ public class Clan extends DataObject {
 	}
 
 	public static String getDonateArmyKeyIdString(Long userRaceId) {
-		return generatorFieldKey(Entity.USERRACE, userRaceId, Entity.DONATEARMY.name());
+		return generatorFieldKey(Entity.PLAYER, userRaceId, Entity.DONATEARMY.name());
 	}
 
 	public ClanBase getClanBase() {

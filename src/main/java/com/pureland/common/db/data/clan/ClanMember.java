@@ -27,12 +27,12 @@ public class ClanMember extends DataObject {
 
     //USERRACE:1:ClanMemberInfo
     public static String getClanMemberIdKeyString(Long userRaceId) {
-        return generatorFieldKey(Entity.USERRACE, userRaceId, Field.ClanMemberInfo.name());
+        return generatorFieldKey(Entity.PLAYER, userRaceId, Field.ClanMemberInfo.name());
     }
 
     //USERRACE:1:ClanId
     public static String getClanIdKeyString(Long userRaceId) {
-        return generatorFieldKey(Entity.USERRACE, userRaceId, Field.ClanId.name());
+        return generatorFieldKey(Entity.PLAYER, userRaceId, Field.ClanId.name());
     }
 
     public Long getClanId() {

@@ -4,11 +4,11 @@ import com.pureland.seria.db.seriaData.building.Building;
 import com.pureland.common.error.CoreException;
 import com.pureland.common.service.bean.BuildingUpgradeBean;
 import com.pureland.common.util.SpringContextUtil;
-import com.pureland.seria.db.dao.BuildingSeriaDAO;
+import com.pureland.seria.db.dao.BuildingDao;
 import com.pureland.seria.module.BuildingModule;
 
 public abstract class BuildUpgradeLogicSeria {
-	private BuildingSeriaDAO buildingSeriaDAO = (BuildingSeriaDAO) SpringContextUtil.getBean(BuildingSeriaDAO.class.getSimpleName());
+	private BuildingDao buildingSeriaDAO = (BuildingDao) SpringContextUtil.getBean(BuildingDao.class.getSimpleName());
 
 	public void upgradeBuilding(BuildingUpgradeBean buildingUpgradeBean) throws CoreException {
 		Long userRaceId = buildingUpgradeBean.getUserRaceId();

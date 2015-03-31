@@ -41,7 +41,7 @@ public class UserRace extends DataObject {
 	}
 
 	public static String generatorFieldKey(Long id, String field) {
-		return generatorFieldKey(Entity.USERRACE, id, field);
+		return generatorFieldKey(Entity.PLAYER, id, field);
 	}
 
 	/**

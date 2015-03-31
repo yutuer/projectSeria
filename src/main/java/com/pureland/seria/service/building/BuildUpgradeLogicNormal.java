@@ -17,7 +17,7 @@ import com.pureland.core.service.BuildingService;
 import com.pureland.core.service.UserExtService;
 import com.pureland.core.service.impl.BuildingServiceImpl;
 import com.pureland.core.service.impl.UserExtServiceImpl;
-import com.pureland.seria.db.dao.BuildingSeriaDAO;
+import com.pureland.seria.db.dao.BuildingDao;
 import com.pureland.seria.db.seriaData.building.Building;
 
 public class BuildUpgradeLogicNormal extends BuildUpgradeLogicSeria {
@@ -25,7 +25,7 @@ public class BuildUpgradeLogicNormal extends BuildUpgradeLogicSeria {
 	private UserRaceCommonService userRaceCommonService = (UserRaceCommonService) SpringContextUtil.getBean(UserRaceCommonServiceImpl.class.getSimpleName());
 	private WorkerQueueCommonService queueService = (WorkerQueueCommonService) SpringContextUtil.getBean(WorkerQueueCommonServiceImpl.class.getSimpleName());
 	private BuildingService buildingService = (BuildingService) SpringContextUtil.getBean(BuildingServiceImpl.class.getSimpleName());
-	private BuildingSeriaDAO buildingSeriaDAO = (BuildingSeriaDAO) SpringContextUtil.getBean(BuildingSeriaDAO.class.getSimpleName());
+	private BuildingDao buildingSeriaDAO = (BuildingDao) SpringContextUtil.getBean(BuildingDao.class.getSimpleName());
 
 	@Override
 	protected void upgradeBuilding0(BuildingUpgradeBean buildingUpgradeBean, Building building) throws CoreException {
