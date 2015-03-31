@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<project name="pureland" default="run" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+	<property name="jarDir" location="./jarDir" />
+	<property name="targetDir" location="./target" />
+	<property name="resourceDir" location="${targetDir}/resources" />
+	<property name="libDir" location="${targetDir}/lib" />
+
+	<target name="svnupdate">
+		<echo message="svn  update!!!">
+		</echo>
+		<exec executable="svn">
+			<!-- 直接调用 svn.exe,注意svn.exe要能够通过path访问到-->
+			<!-- 设置svn 的命令行参数 -->
+			<arg line="update" />
+		</exec>
+	</target>
+
+	<condition property="isWindows">
+		<os family="windows" />
+	</condition>
+
+	<condition property="isUnix">
+		<os family="unix" />
+	</condition>
+
+	<target name="maven" depends="svnupdate, mvn_windows, mvn_unix" />
+
+	<target name="mvn_windows" if="isWindows">
+		<exec dir="." executable="cmd">
+			<arg line="/c mvn clean package" />
+		</exec>
+	</target>
+
+	<target name="mvn_unix" if="isUnix">
+		<exec dir="." executable="sh">
+			<arg line="-c 'mvn clean package'" />
+		</exec>
+	</target>
+
+	<target name="clean" depends="maven">
+		<mkdir dir="${jarDir}" />
+		<delete includeemptydirs="true">
+			<fileset dir="${jarDir}" includes="**/*" defaultexcludes="false" />
+		</delete>
+	</target>
+
+	<target name="move" depends="clean">
+		<copy todir="${jarDir}" failonerror="false" overwrite="true">
+			<file file="${targetDir}/single-0.0.1.jar" />
+		</copy>
+		<copy todir="${jarDir}/lib" failonerror="false" overwrite="true">
+			<fileset dir="${libDir}" />
+		</copy>
+		<copy todir="${jarDir}/resources" failonerror="false" overwrite="true">
+			<fileset dir="${resourceDir}" />
+		</copy>
+	</target>
+
+	<target name="run" depends="move">
+		<java classname="com.pureland.core.netty.websocket.WebSocketServer" fork="yes">
+			<classpath>
+				<pathelement location="${jarDir}/single-0.0.1.jar" />
+				<pathelement path="${jarDir}/resources" />
+			</classpath>
+		</java>
+	</target>
+</project>

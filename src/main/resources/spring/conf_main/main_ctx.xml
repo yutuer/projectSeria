@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   
+           http://www.springframework.org/schema/context   
+           http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+           http://www.springframework.org/schema/tx 
+           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd 
+           http://www.springframework.org/schema/aop   
+           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+           http://www.springframework.org/schema/task 
+           http://www.springframework.org/schema/task/spring-task-3.0.xsd 
+           http://www.springframework.org/schema/mvc 
+		   http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+	<bean
+		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+
+	<bean id="taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="20" />
+		<property name="maxPoolSize" value="1000" />
+		<property name="queueCapacity" value="2000" />
+	</bean>
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="${mysql.driver}" />
+		<property name="maxActive" value="80" />
+		<property name="minIdle" value="20" />
+		<property name="maxIdle" value="80" />
+		<property name="testOnBorrow" value="true" />
+		<property name="testOnReturn" value="true" />
+		<property name="testWhileIdle" value="true" />
+		<property name="url" value="${url}" />
+		<property name="username" value="${user}" />
+		<property name="password" value="${password}" />
+	</bean>
+
+	<!--<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> -->
+	<!--<property name="dataSource" ref="dataSource"/> -->
+	<!--</bean> -->
+
+	<!--&lt;!&ndash; 配置事务属性 &ndash;&gt; -->
+	<!--<tx:advice id="txAdvice" transaction-manager="txManager"> -->
+	<!--<tx:attributes> -->
+	<!--<tx:method name="add*" propagation="REQUIRED"/> -->
+	<!--<tx:method name="del*" propagation="REQUIRED"/> -->
+	<!--<tx:method name="update*" propagation="REQUIRED"/> -->
+	<!--<tx:method name="*" read-only="true"/> -->
+	<!--</tx:attributes> -->
+	<!--</tx:advice> -->
+
+
+	<!--&lt;!&ndash; 配置需要管理的方法 &ndash;&gt; -->
+	<!--<aop:config> -->
+	<!--&lt;!&ndash; <aop:pointcut id="allManagerMethod" expression="execution(* 
+		com.qunar.lm.analysis.service.*.*(..))"/> &ndash;&gt; -->
+	<!--<aop:pointcut id="allManagerMethod" expression="execution(* *..service..*.*(..))"/> -->
+	<!--<aop:advisor advice-ref="txAdvice" pointcut-ref="allManagerMethod"/> -->
+	<!--</aop:config> -->
+
+	<!--<tx:annotation-driven transaction-manager="txManager"/> -->
+
+	<!-- 创建SqlSessionFactory，同时指定数据源 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:db/mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath:mapper/*.xml" />
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage"
+			value="com.pureland.common.db.dao.mysql.mapper.SqlMapper" />
+		<property name="markerInterface"
+			value="com.pureland.common.db.dao.mysql.mapper.SqlMapper" />
+	</bean>
+
+	<!-- common service&dao instance -->
+	<!-- <bean id="EntityModelMapper" class="com.pureland.common.db.dao.mysql.mapper.EntityModelMapper"/> -->
+
+	<bean id="UserDAO" class="com.pureland.common.db.dao.redis.UserDAO" />
+	<bean id="UserRaceDAO" class="com.pureland.common.db.dao.redis.UserRaceDAO" />
+	<bean id="UserRaceMappingDAO" class="com.pureland.common.db.dao.redis.UserRaceMappingDAO" />
+	<bean id="BuildingDAO" class="com.pureland.common.db.dao.redis.BuildingDAO" />
+	<bean id="UserExtDAO" class="com.pureland.common.db.dao.redis.UserExtDAO" />
+	<bean id="ResourceDAO" class="com.pureland.common.db.dao.redis.ResourceDAO" />
+	<bean id="ProductDAO" class="com.pureland.common.db.dao.redis.ProductDAO" />
+	<bean id="ArmyDAO" class="com.pureland.common.db.dao.redis.ArmyDAO" />
+	<bean id="SkillDAO" class="com.pureland.common.db.dao.redis.SkillDAO" />
+	<bean id="AttackDAO" class="com.pureland.common.db.dao.redis.battle.AttackDAO" />
+	<bean id="DefendDAO" class="com.pureland.common.db.dao.redis.battle.DefendDAO" />
+	<bean id="ReplayDAO" class="com.pureland.common.db.dao.redis.battle.ReplayDAO" />
+	<bean id="ResourceRecordDAO"
+		class="com.pureland.common.db.dao.redis.battle.ResourceRecordDAO" />
+	<bean id="ArmyConsumeDAO" class="com.pureland.common.db.dao.redis.battle.ArmyConsumeDAO" />
+	<bean id="MachineDAO" class="com.pureland.common.db.dao.redis.MachineDAO" />
+	<bean id="ArmyExpDAO" class="com.pureland.common.db.dao.redis.ArmyExpDAO" />
+	<bean id="SkillConsumeDAO" class="com.pureland.common.db.dao.redis.battle.SkillConsumeDAO" />
+	<bean id="ShipDAO" class="com.pureland.common.db.dao.redis.explore.ShipDAO" />
+	<bean id="ClanDAO" class="com.pureland.common.db.dao.redis.clan.ClanDAO" />
+	<bean id="ClanMemberDAO" class="com.pureland.common.db.dao.redis.clan.ClanMemberDAO" />
+	<bean id="DonateArmyDAO" class="com.pureland.common.db.dao.redis.clan.DonateArmyDAO" />
+	<bean id="ChatDAO" class="com.pureland.common.db.dao.redis.ChatDAO" />
+
+	<!--<bean id="EntityModelDAO" class="com.pureland.common.db.dao.mysql.EntityModelDAO"/> -->
+	<!--<bean id="BuildingLimitModelDAO" class="com.pureland.common.db.dao.mysql.BuildingLimitModelDAO"/> -->
+	<!--<bean id="ArmoryModelDAO" class="com.pureland.common.db.dao.mysql.ArmoryModelDAO"/> -->
+	<!--<bean id="ShopModelDao" class="com.pureland.common.db.dao.mysql.ShopModelDao"/> -->
+	<!--<bean id="RankModelDao" class="com.pureland.common.db.dao.mysql.RankModelDao"/> -->
+
+	<bean id="EntityModelDAO"
+		class="com.pureland.common.db.dao.redis.excel.EntityModelDAORedis" />
+	<bean id="BuildingLimitModelDAO"
+		class="com.pureland.common.db.dao.redis.excel.BuildingLimitModelDAORedis" />
+	<bean id="ArmoryModelDAO"
+		class="com.pureland.common.db.dao.redis.excel.ArmoryModelDAORedis" />
+	<bean id="ShopModelDao"
+		class="com.pureland.common.db.dao.redis.excel.ShopModelDaoRedis" />
+	<bean id="RankModelDao"
+		class="com.pureland.common.db.dao.redis.excel.RankModelDaoRedis" />
+	<bean id="ExploreModelDao"
+		class="com.pureland.common.db.dao.redis.excel.ExploreModelDaoRedis" />
+
+
+	<!-- commonService -->
+	<bean id="ResourceCommonServiceImpl"
+		class="com.pureland.common.service.impl.ResourceCommonServiceImpl" />
+	<bean id="UserCommonServiceImpl" class="com.pureland.common.service.impl.UserCommonServiceImpl" />
+	<bean id="CampCommonServiceImpl" class="com.pureland.common.service.impl.CampCommonServiceImpl" />
+	<bean id="ArmyExpCommonServiceImpl"
+		class="com.pureland.common.service.impl.ArmyExpCommonServiceImpl" />
+	<bean id="UserRaceCommonServiceImpl"
+		class="com.pureland.common.service.impl.UserRaceCommonServiceImpl" />
+	<bean id="UserExtCommonServiceImpl"
+		class="com.pureland.common.service.impl.UserExtCommonServiceImpl" />
+	<bean id="BuildingCommonServiceImpl"
+		class="com.pureland.common.service.impl.BuildingCommonServiceImpl" />
+	<bean id="ProductCommonServiceImpl"
+		class="com.pureland.common.service.impl.ProductCommonServiceImpl" />
+	<bean id="ArmyCommonServiceImpl" class="com.pureland.common.service.impl.ArmyCommonServiceImpl" />
+	<bean id="SkillCommonServiceImpl" class="com.pureland.common.service.impl.SkillCommonServiceImpl" />
+	<bean id="WorkerQueueCommonServiceImpl"
+		class="com.pureland.common.service.impl.WorkerQueueCommonServiceImpl" />
+	<bean id="AttackCommonServiceImpl"
+		class="com.pureland.common.service.battle.impl.AttackCommonServiceImpl" />
+	<bean id="DefendCommonServiceImpl"
+		class="com.pureland.common.service.battle.impl.DefendCommonServiceImpl" />
+	<bean id="ReplayCommonServiceImpl"
+		class="com.pureland.common.service.battle.impl.ReplayCommonServiceImpl" />
+	<bean id="SkillConsumeCommonServiceImpl"
+		class="com.pureland.common.service.battle.impl.SkillConsumeCommonServiceImpl" />
+	<bean id="ResourceRecordCommonServiceImpl"
+		class="com.pureland.common.service.battle.impl.ResourceRecordCommonServiceImpl" />
+	<bean id="ArmyConsumeCommonServiceImpl"
+		class="com.pureland.common.service.battle.impl.ArmyConsumeCommonServiceImpl" />
+	<bean id="MachineCommonServiceImpl"
+		class="com.pureland.common.service.impl.MachineCommonServiceImpl" />
+	<bean id="ClanCommonServiceImpl" class="com.pureland.common.service.impl.ClanCommonServiceImpl" />
+	<bean id="ChatCommonServiceImpl" class="com.pureland.common.service.impl.ChatCommonServiceImpl" />
+
+	<!-- redis service instance -->
+	<bean id="RStringServiceImpl"
+		class="com.pureland.common.component.cache.service.impl.RStringServiceImpl" />
+	<bean id="RListServiceImpl"
+		class="com.pureland.common.component.cache.service.impl.RListServiceImpl" />
+	<bean id="RSetServiceImpl"
+		class="com.pureland.common.component.cache.service.impl.RSetServiceImpl" />
+	<bean id="RSortedSetServiceImpl"
+		class="com.pureland.common.component.cache.service.impl.RSortedSetServiceImpl" />
+
+	<!-- core service&dao instance -->
+	<bean id="BuildCompleteLogicNormal"
+		class="com.pureland.core.service.building.BuildCompleteLogicNormal" />
+	<bean id="BuildCompleteLogicImmediate"
+		class="com.pureland.core.service.building.BuildCompleteLogicImmediate" />
+	<bean id="BuildUpgradeLogicNormal"
+		class="com.pureland.core.service.building.BuildUpgradeLogicNormal"
+		lazy-init="true" />
+	<bean id="BuildUpgradeLogicCancel"
+		class="com.pureland.core.service.building.BuildUpgradeLogicCancel"
+		lazy-init="true" />
+
+
+	<bean id="HumanRaceHandler" class="com.pureland.core.handler.race.HumanRaceHandler" />
+	<bean id="PredatorRaceHandler" class="com.pureland.core.handler.race.PredatorRaceHandler" />
+	<bean id="ResearchUpgradeHandler"
+		class="com.pureland.core.handler.ResearchLogicHandler$ResearchUpgradeHandler" />
+	<bean id="ResearchCompleteHandler"
+		class="com.pureland.core.handler.ResearchLogicHandler$ResearchCompleteHandler" />
+	<bean id="ResearchUpgradeCompleteImmediateHandler"
+		class="com.pureland.core.handler.ResearchLogicHandler$ResearchUpgradeCompleteImmediateHandler" />
+
+
+	<bean id="UserServiceImpl" class="com.pureland.core.service.impl.UserServiceImpl">
+		<property name="handlerMap">
+			<map>
+				<entry key="Human" value-ref="HumanRaceHandler" />
+				<entry key="Predator" value-ref="PredatorRaceHandler" />
+			</map>
+		</property>
+	</bean>
+
+
+	<bean id="UserRaceServiceImpl" class="com.pureland.core.service.impl.UserRaceServiceImpl" />
+	<bean id="UserExtServiceImpl" class="com.pureland.core.service.impl.UserExtServiceImpl" />
+	<bean id="BuildingServiceImpl" class="com.pureland.core.service.impl.BuildingServiceImpl">
+		<property name="buildCompleteLogicMap">
+			<map>
+				<entry key="Normal" value-ref="BuildCompleteLogicNormal" />
+				<entry key="CompleteImmediately" value-ref="BuildCompleteLogicImmediate" />
+			</map>
+		</property>
+		<property name="buildUpgradeLogicMap">
+			<map>
+				<entry key="Cancel" value-ref="BuildUpgradeLogicCancel" />
+				<entry key="NotCancel" value-ref="BuildUpgradeLogicNormal" />
+			</map>
+		</property>
+	</bean>
+
+
+	<bean id="VerifyServiceImpl" class="com.pureland.core.service.impl.VerifyServiceImpl" />
+	<bean id="ProductAddServiceImpl" class="com.pureland.core.service.product.ProductAddServiceImpl" />
+	<bean id="ProductRemoveServiceImpl"
+		class="com.pureland.core.service.product.ProductRemoveServiceImpl" />
+	<bean id="ProductCompleteServiceImpl"
+		class="com.pureland.core.service.product.ProductCompleteServiceImpl" />
+	<bean id="ProductCompleteImmediatelyImpl"
+		class="com.pureland.core.service.product.ProductCompleteImmediatelyImpl" />
+	<bean id="ArmyServiceImpl" class="com.pureland.core.service.impl.ArmyServiceImpl" />
+	<bean id="SkillServiceImpl" class="com.pureland.core.service.impl.SkillServiceImpl" />
+	<bean id="ResourceServiceImpl" class="com.pureland.core.service.impl.ResourceServiceImpl" />
+	<bean id="AttackServiceImpl" class="com.pureland.core.service.battle.impl.AttackServiceImpl" />
+	<bean id="DefendServiceImpl" class="com.pureland.core.service.battle.impl.DefendServiceImpl" />
+	<bean id="ReplayServiceImpl" class="com.pureland.core.service.battle.impl.ReplayServiceImpl" />
+	<bean id="BattleServiceImpl" class="com.pureland.core.service.impl.BattleServiceImpl" />
+
+	<bean id="ResearchServiceImpl" class="com.pureland.core.service.impl.ResearchServiceImpl">
+		<property name="handlerMap">
+			<map>
+				<entry key="Research" value-ref="ResearchUpgradeHandler" />
+				<entry key="Complete" value-ref="ResearchCompleteHandler" />
+				<entry key="CompleteImmediately" value-ref="ResearchUpgradeCompleteImmediateHandler" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="ProductMap" class="com.pureland.core.service.product.ProductMap">
+		<property name="productMaps">
+			<map>
+				<entry key="Add" value-ref="ProductAddServiceImpl" />
+				<entry key="Remove" value-ref="ProductRemoveServiceImpl" />
+				<entry key="Complete" value-ref="ProductCompleteServiceImpl" />
+				<entry key="CompleteImmediately" value-ref="ProductCompleteImmediatelyImpl" />
+			</map>
+		</property>
+	</bean>
+
+
+	<bean id="ExploreShipListServiceImpl"
+		class="com.pureland.core.service.explore.ExploreShipListServiceImpl" />
+	<bean id="ExploreServiceImpl" class="com.pureland.core.service.explore.ExploreServiceImpl" />
+	<bean id="CompleteExploreServiceImpl"
+		class="com.pureland.core.service.explore.CompleteExploreServiceImpl" />
+	<bean id="ExploreUpgradeServiceImpl"
+		class="com.pureland.core.service.explore.ExploreUpgradeServiceImpl" />
+	<bean id="CancelExploreServiceImpl"
+		class="com.pureland.core.service.explore.CancelExploreServiceImpl" />
+	<bean id="CancelUpgradeServiceImpl"
+		class="com.pureland.core.service.explore.CancelUpgradeServiceImpl" />
+	<bean id="ExploreBuyShipServiceImpl"
+		class="com.pureland.core.service.explore.ExploreBuyShipServiceImpl" />
+	<bean id="ExploreGatherServiceImpl"
+		class="com.pureland.core.service.explore.ExploreGatherServiceImpl" />
+	<bean id="CompleteUpgradeServiceImpl"
+		class="com.pureland.core.service.explore.CompleteUpgradeServiceImpl" />
+
+	<bean id="ExploreMap" class="com.pureland.core.service.explore.ExploreMap">
+		<property name="exploreMaps">
+			<map>
+				<entry key="ShipList" value-ref="ExploreShipListServiceImpl" />
+				<entry key="Explore" value-ref="ExploreServiceImpl" />
+				<entry key="CompleteExplore" value-ref="CompleteExploreServiceImpl" />
+				<entry key="Upgrade" value-ref="ExploreUpgradeServiceImpl" />
+				<entry key="CancelExplore" value-ref="CancelExploreServiceImpl" />
+				<entry key="CancelUpgrade" value-ref="CancelUpgradeServiceImpl" />
+				<entry key="BuyShip" value-ref="ExploreBuyShipServiceImpl" />
+				<entry key="Gather" value-ref="ExploreGatherServiceImpl" />
+				<entry key="CompleteUpgrade" value-ref="CompleteUpgradeServiceImpl" />
+			</map>
+		</property>
+	</bean>
+
+
+	<bean id="CreateClanServiceImpl" class="com.pureland.core.service.clan.CreateClanServiceImpl" />
+	<bean id="GetClanInfoServiceImpl" class="com.pureland.core.service.clan.GetClanInfoServiceImpl" />
+	<bean id="SearchClanServiceImpl" class="com.pureland.core.service.clan.SearchClanServiceImpl" />
+	<bean id="JoinClanServiceImpl" class="com.pureland.core.service.clan.JoinClanServiceImpl" />
+	<bean id="LeaveClanServiceImpl" class="com.pureland.core.service.clan.LeaveClanServiceImpl" />
+	<bean id="ClanPromoteServiceImpl" class="com.pureland.core.service.clan.ClanPromoteServiceImpl" />
+	<bean id="ClanDegradeServiceImpl" class="com.pureland.core.service.clan.ClanDegradeServiceImpl" />
+	<bean id="ClanKickServiceImpl" class="com.pureland.core.service.clan.ClanKickServiceImpl" />
+	<bean id="ModifyClanServiceImpl" class="com.pureland.core.service.clan.ModifyClanServiceImpl" />
+	<bean id="ClanAskForBackUpServiceImpl"
+		class="com.pureland.core.service.clan.ClanAskForBackUpServiceImpl" />
+	<bean id="ClanBackUpServiceImpl" class="com.pureland.core.service.clan.ClanBackUpServiceImpl" />
+	<bean id="AskForDonateImmediatelyServiceImpl"
+		class="com.pureland.core.service.clan.AskForDonateImmediatelyServiceImpl" />
+
+	<bean id="ClanMap" class="com.pureland.core.service.clan.ClanMap">
+		<property name="clanMap">
+			<map>
+				<entry key="CreateClan" value-ref="CreateClanServiceImpl" />
+				<entry key="GetClanInfo" value-ref="GetClanInfoServiceImpl" />
+				<entry key="Search" value-ref="SearchClanServiceImpl" />
+				<entry key="JoinClan" value-ref="JoinClanServiceImpl" />
+				<entry key="LeaveClan" value-ref="LeaveClanServiceImpl" />
+				<entry key="Promote" value-ref="ClanPromoteServiceImpl" />
+				<entry key="Degrade" value-ref="ClanDegradeServiceImpl" />
+				<entry key="Kick" value-ref="ClanKickServiceImpl" />
+				<entry key="ModifyClan" value-ref="ModifyClanServiceImpl" />
+				<entry key="AskForDonate" value-ref="ClanAskForBackUpServiceImpl" />
+				<entry key="Donate" value-ref="ClanBackUpServiceImpl" />
+				<entry key="AskForDonateImmediately" value-ref="AskForDonateImmediatelyServiceImpl" />
+			</map>
+		</property>
+	</bean>
+
+
+	<bean id="SendChatServiceImpl" class="com.pureland.core.service.chat.SendChatServiceImpl" />
+	<bean id="GetClanChatMsgsServiceImpl"
+		class="com.pureland.core.service.chat.GetClanChatMsgsServiceImpl" />
+
+	<bean id="ChatMap" class="com.pureland.core.service.chat.ChatMap">
+		<property name="chatMap">
+			<map>
+				<entry key="SendChat" value-ref="SendChatServiceImpl" />
+				<entry key="GetClanChatMsgs" value-ref="GetClanChatMsgsServiceImpl" />
+			</map>
+		</property>
+	</bean>
+
+
+	<bean id="ClanHandler" class="com.pureland.core.handler.api.ClanHandler" />
+	<bean id="ExploreHandler" class="com.pureland.core.handler.api.ExploreHandler" />
+	<bean id="NoAuthLoginHandler" class="com.pureland.core.handler.api.NoAuthLoginHandler" />
+	<bean id="CampHandler" class="com.pureland.core.handler.api.CampHandler" />
+	<bean id="ChargeDiamondHandler" class="com.pureland.core.handler.api.ChargeDiamondHandler" />
+	<bean id="BuildingConsHandler" class="com.pureland.core.handler.api.BuildingConsHandler" />
+	<bean id="BuildingUpgradeHandler" class="com.pureland.core.handler.api.BuildingUpgradeHandler" />
+	<bean id="BuildingCompleteHandler" class="com.pureland.core.handler.api.BuildingCompleteHandler" />
+	<bean id="ProductionReqHandler" class="com.pureland.core.handler.api.ProductionReqHandler" />
+	<bean id="GatherHandler" class="com.pureland.core.handler.api.GatherHandler" />
+	<bean id="BattleResultHandler" class="com.pureland.core.handler.api.BattleResultHandler" />
+	<bean id="BattleHistoryHandler" class="com.pureland.core.handler.api.BattleHistoryHandler" />
+	<bean id="BattleReplayHandler" class="com.pureland.core.handler.api.BattleReplayHandler" />
+	<bean id="AuthLoginHandler" class="com.pureland.core.handler.api.AuthLoginHandler" />
+	<bean id="PlayerRoleHandler" class="com.pureland.core.handler.api.PlayerRoleHandler" />
+	<bean id="BindAccountHandler" class="com.pureland.core.handler.api.BindAccountHandler" />
+	<bean id="CheckAccountHandler" class="com.pureland.core.handler.api.CheckAccountHandler" />
+	<bean id="FightSearchHandler" class="com.pureland.core.handler.api.FightSearchHandler" />
+	<bean id="BuyResourceHandler" class="com.pureland.core.handler.api.BuyResourceHandler" />
+	<bean id="TrapRefillHandler" class="com.pureland.core.handler.api.TrapRefillHandler" />
+	<bean id="MoveBuildingHandler" class="com.pureland.core.handler.api.MoveBuildingHandler" />
+	<bean id="ResearchHandler" class="com.pureland.core.handler.api.ResearchHandler" />
+	<bean id="ChatHandler" class="com.pureland.core.handler.api.ChatHandler" />
+
+
+	<bean id="RequestAPIMap" class="com.pureland.core.handler.RequestAPIMap">
+		<property name="apiHandlerMap">
+			<map>
+				<entry key="NoAuthLogin" value-ref="NoAuthLoginHandler" />
+				<entry key="Camp" value-ref="CampHandler" />
+				<entry key="BuildingCons" value-ref="BuildingConsHandler" />
+				<entry key="BuildingUpgrade" value-ref="BuildingUpgradeHandler" />
+				<entry key="BuildingComplete" value-ref="BuildingCompleteHandler" />
+				<entry key="Production" value-ref="ProductionReqHandler" />
+				<entry key="Gather" value-ref="GatherHandler" />
+				<entry key="BattleResult" value-ref="BattleResultHandler" />
+				<entry key="BattleHistory" value-ref="BattleHistoryHandler" />
+				<entry key="BattleReplay" value-ref="BattleReplayHandler" />
+				<entry key="AuthLogin" value-ref="AuthLoginHandler" />
+				<entry key="PlayerList" value-ref="PlayerRoleHandler" />
+				<entry key="CompleteInfo" value-ref="BindAccountHandler" />
+				<entry key="ChangeAccount" value-ref="CheckAccountHandler" />
+				<entry key="FightSearch" value-ref="FightSearchHandler" />
+				<entry key="Research" value-ref="ResearchHandler" />
+				<entry key="BuyResource" value-ref="BuyResourceHandler" />
+				<entry key="MoveBuilding" value-ref="MoveBuildingHandler" />
+				<entry key="ChargeDiamond" value-ref="ChargeDiamondHandler" />
+				<entry key="TrapRefill" value-ref="TrapRefillHandler" />
+				<entry key="Explore" value-ref="ExploreHandler" />
+				<entry key="Clan" value-ref="ClanHandler" />
+				<entry key="Chat" value-ref="ChatHandler" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="IsCanBeBuildCondition"
+		class="com.pureland.core.service.conditions.IsCanBeBuildCondition" />
+	<bean id="BuildUnlockCondition"
+		class="com.pureland.core.service.conditions.BuildUnlockCondition" />
+	<bean id="UpgradeUnlockCondition"
+		class="com.pureland.core.service.conditions.UpgradeUnlockCondition" />
+	<bean id="WorkerCondition" class="com.pureland.core.service.conditions.WorkerCondition" />
+	<bean id="BuildResourceCondition"
+		class="com.pureland.core.service.conditions.BuildResourceCondition" />
+	<bean id="UpgradeResourceCondition"
+		class="com.pureland.core.service.conditions.UpgradeResourceCondition" />
+
+	<bean id="BuildConditionsLinkedSet"
+		class="com.pureland.core.service.conditions.BuildConditionsLinkedSet">
+		<property name="linkedHashSet">
+			<set>
+				<ref bean="IsCanBeBuildCondition" />
+				<ref bean="BuildUnlockCondition" />
+				<ref bean="WorkerCondition" />
+				<ref bean="BuildResourceCondition" />
+			</set>
+		</property>
+	</bean>
+	<bean id="UpgradeBuildConditionsLinkedSet"
+		class="com.pureland.core.service.conditions.UpgradeBuildConditionsLinkedSet">
+		<property name="linkedHashSet">
+			<set>
+				<ref bean="UpgradeUnlockCondition" />
+				<ref bean="UpgradeResourceCondition" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="PVPNormalServiceImpl"
+		class="com.pureland.core.service.search.impl.PVPNormalServiceImpl" />
+	<bean id="PVPHighServiceImpl"
+		class="com.pureland.core.service.search.impl.PVPHighServiceImpl" />
+	<bean id="FightSearchMap" class="com.pureland.core.service.search.FightSearchMap">
+		<property name="fightSearchMap">
+			<map>
+				<entry key="PVP_NORMAL" value-ref="PVPNormalServiceImpl" />
+				<entry key="PVP_HIGH" value-ref="PVPHighServiceImpl" />
+			</map>
+		</property>
+	</bean>
+
+	<!-- 初始化静态数据 -->
+	<bean id="EntityModelHelper" class="com.pureland.core.init.EntityModelHelper"
+		init-method="init" />
+	<bean id="ArmoryModelHelper" class="com.pureland.core.init.ArmoryModelHelper"
+		init-method="init" />
+	<bean id="BuildingLimitModelHelper" class="com.pureland.core.init.BuildingLimitModelHelper"
+		init-method="init" />
+	<bean id="RankModelHelper" class="com.pureland.core.init.RankModelHelper"
+		init-method="init" />
+	<bean id="ShopModelHelper" class="com.pureland.core.init.ShopModelHelper"
+		init-method="init" />
+	<bean id="ExploreModelHelper" class="com.pureland.core.init.ExploreModelHelper"
+		init-method="init" />
+
+
+</beans>

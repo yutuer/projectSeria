@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pureland.common.db.dao.mysql.mapper.EntityModelMapper">
+
+    <select id="queryEntityModelList" resultType="entityModel">
+        SELECT  `id` as id,
+			    `base_id` as baseId,
+			    `upgrade_id` as upgradeId,
+			    `race_type` as raceType,
+			    `entity_type` as entityType,
+			    `sub_type` as subType,
+			    `level` as level,
+			    `name` as name,
+			    `build_need_type` as buildNeedType,
+			    `build_need_id` as buildNeedId,
+			    `upgrade_need_type` as upgradeNeedType,
+			    `upgrade_need_id` as upgradeNeedId,
+			    `cost_resource_type` as costResourceType,
+			    `cost_resource_count` as costResourceCount,
+			    `build_time` as buildTime,
+			    `build_exp` as buildExp,
+			    `resource_type` as resourceType,
+			    `resource_per_second` as resourcePerSecond,
+				`max_resource_storage` as maxResourceStorage,
+				`train_cost_resource_count` as trainCostResourceCount,
+				`train_time` as trainTime,
+				`space_use` as spaceUse,
+				`queue_size` as queueSize,
+		 		`space_provide` as spaceProvide,
+		 		`train_cost_resource_type` as trainCostResourceType,
+		 		`refill_cost_resource_type` as refillCostResourceType,
+				`refill_cost_resource_count` as refillCostResourceCount,
+				`tile_size` as tileSize
+		FROM `entity_model`
+		WHERE 1=1
+    </select>
+
+</mapper>
+
+
+

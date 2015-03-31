@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-config.dtd">  
+<configuration>  
+    <typeAliases>
+        <typeAlias type="com.pureland.common.db.statics.EntityModel" alias="entityModel"/>
+        <typeAlias type="com.pureland.common.db.statics.BuildingLimitModel" alias="buildingLimitModel"/>
+        <typeAlias type="com.pureland.common.db.statics.ArmoryModel" alias="armoryModel"/>
+        <typeAlias type="com.pureland.common.db.statics.ShopModel" alias="shopModel"/>
+        <typeAlias type="com.pureland.common.db.statics.RankModel" alias="rankModel"/>
+    </typeAliases>
+</configuration>
+

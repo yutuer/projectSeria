@@ -1,0 +1,40 @@
+package com.pureland.seria.db.dao;
+
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+
+import com.pureland.common.util.SpringContextUtil;
+import com.pureland.seria.db.seriaData.building.Building;
+import com.pureland.seria.module.BuildingModule;
+import com.pureland.seria.module.ModuleEnum;
+
+public class BuildingSeriaDAO {
+
+	private RedisTemplate valueJdkRedisTemplate = (RedisTemplate) SpringContextUtil.getBean("valueJdkRedisTemplate");
+
+	public void addBuilding(Building building) {
+		Long playerId = building.getUserRaceId();
+		BuildingModule bm = getBuildingModule(playerId);
+		bm.addBuilding(building);
+		updateBuildingModule(bm);
+	}
+
+	public BuildingModule getBuildingModule(Long playerId) {
+		String key = BuildingModule.getKeyString(playerId);
+		HashOperations<String, String, BuildingModule> oper = valueJdkRedisTemplate.opsForHash();
+		return oper.get(key, ModuleEnum.Building.name());
+	}
+
+	public void updateBuildingModule(BuildingModule bm) {
+		String key = BuildingModule.getKeyString(bm.getPlayerId());
+		HashOperations<String, String, BuildingModule> oper = valueJdkRedisTemplate.opsForHash();
+		oper.put(key, ModuleEnum.Building.name(), bm);
+	}
+
+	public void updateBuilding(Building bs) {
+		BuildingModule bm = getBuildingModule(bs.getUserRaceId());
+		bm.addBuilding(bs);
+		updateBuildingModule(bm);
+	}
+
+}
