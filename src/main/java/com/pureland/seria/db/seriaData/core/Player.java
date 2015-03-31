@@ -11,15 +11,8 @@ public class Player implements Serializable {
 
 	private long playerId;
 	private Long userId;
-	private Integer raceId; // 种族id
 	private Long lastLoginTime;
-	private Long lastOperateTime; // 最后一次发送消息的时间
-	private String playerName;
-	private Integer campCid;
-	private Integer level;
-	private Integer experience;
-	private Integer crown;
-	
+
 	public Player() {
 		super();
 	}
@@ -31,10 +24,14 @@ public class Player implements Serializable {
 
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		out.writeLong(playerId);
+		out.writeLong(userId);
+		out.writeLong(lastLoginTime);
 	}
 
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		playerId = in.readLong();
+		userId = in.readLong();
+		lastLoginTime = in.readLong();
 	}
 
 	public long getPlayerId() {
