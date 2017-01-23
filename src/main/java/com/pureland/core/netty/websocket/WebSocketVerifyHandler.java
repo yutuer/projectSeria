@@ -24,7 +24,7 @@ public class WebSocketVerifyHandler extends WebSocketHandler {
 	private VerifyService verifyService = (VerifyService) SpringContextUtil.getBean(VerifyServiceImpl.class.getSimpleName());
 
 	@Override
-	protected void messageReceived(final ChannelHandlerContext ctx, BaseReqProtocal.BaseReq baseReq) throws Exception {
+	protected void channelRead0(final ChannelHandlerContext ctx, BaseReqProtocal.BaseReq baseReq) throws Exception {
 		RespWrapperProtocal.RespWrapper respWrapper = null;
 		try {
 			PurelandLog.info(TAG, "请求:\n" + baseReq.toString());

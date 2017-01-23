@@ -4,6 +4,7 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import com.pureland.common.util.SpringContextUtil;
+import com.pureland.seria.db.seriaData.building.Building;
 import com.pureland.seria.module.BuildingModule;
 import com.pureland.seria.module.ModuleEnum;
 
@@ -21,6 +22,10 @@ public class BuildingDao {
 		String key = BuildingModule.getKeyString(bm.getPlayerId());
 		HashOperations<String, String, BuildingModule> oper = valueJdkRedisTemplate.opsForHash();
 		oper.put(key, ModuleEnum.Building.name(), bm);
+	}
+
+	public void updateBuilding(Building building) {
+		
 	}
 
 }

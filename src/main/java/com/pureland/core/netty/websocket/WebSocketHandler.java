@@ -53,7 +53,6 @@ public abstract class WebSocketHandler extends SimpleChannelInboundHandler<BaseR
         ChannelGroupUtil.addChannel2Global(ctx.channel());
     }
 
-    @Override
     public void disconnect(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
         ctx.close();
     }

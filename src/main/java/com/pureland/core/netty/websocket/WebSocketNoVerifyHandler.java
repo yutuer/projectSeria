@@ -24,7 +24,7 @@ public class WebSocketNoVerifyHandler extends WebSocketHandler {
 	private static String TAG = PurelandLog.getClassTag(WebSocketNoVerifyHandler.class);
 
 	@Override
-	protected void messageReceived(final ChannelHandlerContext ctx, BaseReqProtocal.BaseReq baseReq) throws Exception {
+	protected void channelRead0(final ChannelHandlerContext ctx, BaseReqProtocal.BaseReq baseReq) throws Exception {
 		RespWrapperProtocal.RespWrapper respWrapper = null;
 		try {
 			PurelandLog.info(TAG, "请求:\n" + baseReq.toString());

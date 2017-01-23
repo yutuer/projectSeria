@@ -12,7 +12,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<org.springframework-version>4.1.1.RELEASE</org.springframework-version>
-		<netty-version>5.0.0.Alpha2</netty-version>
 		<poi-version>3.9</poi-version>
 	</properties>
 
@@ -22,7 +21,7 @@
 			<artifactId>maven-ant-tasks</artifactId>
 			<version>2.1.3</version>
 		</dependency>
-	
+
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
@@ -175,20 +174,11 @@
 		</dependency>
 
 		<!-- Netty -->
+		<!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
 		<dependency>
 			<groupId>io.netty</groupId>
-			<artifactId>netty-transport</artifactId>
-			<version>${netty-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-handler</artifactId>
-			<version>${netty-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-codec-http</artifactId>
-			<version>${netty-version}</version>
+			<artifactId>netty-all</artifactId>
+			<version>4.1.6.Final</version>
 		</dependency>
 
 		<!-- Servlet API and mock req/res -->

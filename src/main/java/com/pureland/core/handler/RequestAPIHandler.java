@@ -21,8 +21,11 @@ import com.pureland.core.service.UserRaceService;
 import com.pureland.core.service.impl.UserRaceServiceImpl;
 
 public abstract class RequestAPIHandler {
-	private UserRaceService userRaceService = (UserRaceService) SpringContextUtil.getBean(UserRaceServiceImpl.class.getSimpleName());
-	private UserRaceCommonService userRaceCommonService = (UserRaceCommonService) SpringContextUtil.getBean(UserRaceCommonServiceImpl.class.getSimpleName());
+
+	private UserRaceService userRaceService = (UserRaceService) SpringContextUtil
+			.getBean(UserRaceServiceImpl.class.getSimpleName());
+	private UserRaceCommonService userRaceCommonService = (UserRaceCommonService) SpringContextUtil
+			.getBean(UserRaceCommonServiceImpl.class.getSimpleName());
 
 	public RespWrapper handler0(ReqWrapper reqWrapper, String authToken, Long timestamp) throws CoreException {
 		if (!isLoginReq()) {

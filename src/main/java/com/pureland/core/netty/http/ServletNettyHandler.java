@@ -114,10 +114,10 @@ public class ServletNettyHandler extends SimpleChannelInboundHandler<FullHttpReq
         ctx.write(fullHttpResponse).addListener(ChannelFutureListener.CLOSE);
     }
 
-    @Override
-    protected void messageReceived(ChannelHandlerContext channelHandlerContext, FullHttpRequest fullHttpRequest) throws Exception {
-        if (!fullHttpRequest.decoderResult().isSuccess()) {
-            sendError(channelHandlerContext, BAD_REQUEST);
+	@Override
+	protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest fullHttpRequest) throws Exception {
+		if (!fullHttpRequest.decoderResult().isSuccess()) {
+            sendError(ctx, BAD_REQUEST);
             return;
         }
 
@@ -136,13 +136,13 @@ public class ServletNettyHandler extends SimpleChannelInboundHandler<FullHttpReq
         }
 
         // Write the initial line and the header.
-        channelHandlerContext.write(response);
+        ctx.write(response);
 
         InputStream contentStream = new ByteArrayInputStream(servletResponse.getContentAsByteArray());
 
         // Write the content and flush it.
-        ChannelFuture writeFuture = channelHandlerContext.writeAndFlush(new ChunkedStream(contentStream));
+        ChannelFuture writeFuture = ctx.writeAndFlush(new ChunkedStream(contentStream));
         writeFuture.addListener(ChannelFutureListener.CLOSE);
-    }
+	}
 }
 

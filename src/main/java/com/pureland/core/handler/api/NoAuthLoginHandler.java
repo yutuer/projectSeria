@@ -2,10 +2,7 @@ package com.pureland.core.handler.api;
 
 import com.pureland.common.component.cache.error.RedisException;
 import com.pureland.common.db.data.Building;
-import com.pureland.common.db.data.User;
 import com.pureland.common.db.data.clan.Clan;
-import com.pureland.common.db.error.DBException;
-import com.pureland.common.enums.RaceServerTypeEnum;
 import com.pureland.common.error.CoreException;
 import com.pureland.common.protocal.LoginRespProtocal;
 import com.pureland.common.protocal.LoginRespProtocal.LoginResp;
@@ -15,13 +12,16 @@ import com.pureland.common.protocal.RespWrapperProtocal;
 import com.pureland.common.protocal.RespWrapperProtocal.RespWrapper;
 import com.pureland.common.service.ClanCommonService;
 import com.pureland.common.service.MachineCommonService;
+import com.pureland.common.service.UserRaceCommonService;
 import com.pureland.common.service.impl.ClanCommonServiceImpl;
 import com.pureland.common.service.impl.MachineCommonServiceImpl;
+import com.pureland.common.service.impl.UserRaceCommonServiceImpl;
 import com.pureland.common.util.DesUtil;
 import com.pureland.common.util.SpringContextUtil;
 import com.pureland.core.handler.RequestAPIHandler;
-import com.pureland.core.handler.UserRaceHandler;
+import com.pureland.core.service.UserRaceService;
 import com.pureland.core.service.UserService;
+import com.pureland.core.service.impl.UserRaceServiceImpl;
 import com.pureland.core.service.impl.UserServiceImpl;
 
 public class NoAuthLoginHandler extends RequestAPIHandler {
@@ -29,7 +29,9 @@ public class NoAuthLoginHandler extends RequestAPIHandler {
 	private UserService userService = (UserService) SpringContextUtil.getBean(UserServiceImpl.class.getSimpleName());
 	private ClanCommonService clanCommonService = (ClanCommonService) SpringContextUtil.getBean(ClanCommonServiceImpl.class.getSimpleName());
 	private MachineCommonService machineCommonService = (MachineCommonService) SpringContextUtil.getBean(MachineCommonServiceImpl.class.getSimpleName());
-
+	private UserRaceService userRaceService = (UserRaceService) SpringContextUtil.getBean(UserRaceServiceImpl.class.getSimpleName());
+	private UserRaceCommonService userRaceCommonService = (UserRaceCommonService) SpringContextUtil.getBean(UserRaceCommonServiceImpl.class.getSimpleName());
+	
 	@Override
 	public RespWrapper handler(ReqWrapper reqWrapper, String authToken, Long timestamp) throws CoreException {
 		NoAuthLoginReq noAuthLoginReq = reqWrapper.getNoAuthLoginReq();
@@ -37,9 +39,9 @@ public class NoAuthLoginHandler extends RequestAPIHandler {
 		Integer raceId = noAuthLoginReq.getRaceType();
 		String userName = noAuthLoginReq.getUserName();
 
-		Long userId = .getUserIdByMachineId(machineId);
+		Long userId = machineCommonService.getUserIdByMachineId(machineId);
 		if (userId == null) {
-			userId = register(machineId, raceId, userName);
+			userId = userService.	register(machineId, raceId, userName);
 		}
 
 		Long userRaceId = userService.login(machineId, raceId != null ? raceId : null, userName);
@@ -64,32 +66,6 @@ public class NoAuthLoginHandler extends RequestAPIHandler {
 			throw new CoreException(e.getMessage());
 		}
 		return respWrapper;
-	}
-
-	public Long register(String machineId, Integer raceId, String nickName) throws CoreException {
-		if (raceId == null || RaceServerTypeEnum.getRaceServerTypeEnumById(raceId) == null)
-			throw new CoreException("raceId is invalid, can't be null and must be from one to five");
-
-		Long userId = addQuickUser(machineId);
-		machineCommonService.addMachine(machineId, userId);
-		Long userRaceId = userRaceService.addUserRace(userId, raceId, nickName);
-		RaceServerTypeEnum race = RaceServerTypeEnum.getRaceServerTypeEnumById(raceId);
-		UserRaceHandler userRaceHandler = handlerMap.get(race.name());
-		userRaceHandler.initCamp(userRaceId, Integer.parseInt(raceId.toString()));
-		userRaceCommonService.updateLastOperateTime(userRaceId);
-		return userRaceId;
-	}
-
-	public Long addQuickUser(String machineId) throws CoreException {
-		Long userId = null;
-		try {
-			User user = new User();
-			userId = userDAO.addUser(user);
-		} catch (DBException e) {
-			error(e);
-		}
-		return userId;
-
 	}
 
 	@Override
